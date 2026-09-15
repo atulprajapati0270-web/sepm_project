@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Accommodation{% endblock %}
+{% block content %}<h1>Accommodation</h1><form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Search by name, type or location"><button class="btn">Search</button></form><div class="grid">{% for x in items %}<div class="card"><h3>{{ x.name }}</h3><span class="badge">{{ x.type }}</span><p>📍 {{ x.location }}</p><p>{{ x.details or '' }}</p><p>☎ {{ x.contact or 'Not provided' }}</p></div>{% else %}<p>No accommodation records found.</p>{% endfor %}</div>{% endblock %}

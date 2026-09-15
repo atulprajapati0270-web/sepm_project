@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Notifications{% endblock %}
+{% block content %}<h1>Notifications & Alerts</h1><form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Search notifications"><button class="btn">Search</button></form><div class="list">{% for x in items %}<div class="item"><h3>{{ x.title }} <span class="badge {{ x.priority|lower }}">{{ x.priority }}</span></h3><p>{{ x.message }}</p><small>{{ x.date.strftime('%d %b %Y, %I:%M %p') }}</small></div>{% else %}<p>No notifications published.</p>{% endfor %}</div>{% endblock %}

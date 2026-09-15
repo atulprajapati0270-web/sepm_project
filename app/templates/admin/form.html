@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block title %}Admin Form{% endblock %}
+{% block content %}<div class="form-card wide"><h1>{{ 'Edit' if item else 'Add' }} {{ resource|replace('-', ' ')|title }}</h1>
+<form method="post">
+{% for c in model.__table__.columns if c.name not in ['id','created_at','updated_at','password_hash'] %}
+<label>{{ c.name|replace('_',' ')|title }}
+{% if c.type.__class__.__name__ == 'BOOLEAN' %}
+<select name="{{ c.name }}"><option value="1" {% if item and getattr(item,c.name) %}selected{% endif %}>Yes</option><option value="0" {% if item and not getattr(item,c.name) %}selected{% endif %}>No</option></select>
+{% elif c.type.__class__.__name__ in ['TEXT'] %}
+<textarea name="{{ c.name }}" rows="5">{{ getattr(item,c.name) if item else '' }}</textarea>
+{% elif c.type.__class__.__name__ == 'DATE' %}
+<input type="date" name="{{ c.name }}" value="{{ getattr(item,c.name).isoformat() if item and getattr(item,c.name) else '' }}" required="{{ 'required' if not c.nullable else '' }}">
+{% elif c.type.__class__.__name__ == 'TIME' %}
+<input type="time" name="{{ c.name }}" value="{{ getattr(item,c.name).strftime('%H:%M') if item and getattr(item,c.name) else '' }}">
+{% elif c.type.__class__.__name__ == 'DATETIME' %}
+<input type="datetime-local" name="{{ c.name }}" value="{{ getattr(item,c.name).strftime('%Y-%m-%dT%H:%M') if item and getattr(item,c.name) else '' }}">
+{% else %}
+<input name="{{ c.name }}" value="{{ getattr(item,c.name) if item else '' }}" {{ 'required' if not c.nullable else '' }}>
+{% endif %}
+</label>
+{% endfor %}
+<button class="btn">Save</button> <a href="{{ url_for('admin.list_resource', resource=resource) }}">Cancel</a>
+</form></div>{% endblock %}

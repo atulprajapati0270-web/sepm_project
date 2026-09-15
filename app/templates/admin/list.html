@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}Admin - {{ resource }}{% endblock %}
+{% block content %}<div class="page-head"><h1>Manage {{ resource|replace('-', ' ')|title }}</h1><a class="btn" href="{{ url_for('admin.new_resource', resource=resource) }}">+ Add Record</a></div>
+<div class="table-wrap"><table><thead><tr>
+{% for c in model.__table__.columns if c.name not in ['created_at','updated_at','password_hash'] %}<th>{{ c.name|replace('_',' ')|title }}</th>{% endfor %}<th>Actions</th></tr></thead>
+<tbody>{% for item in items %}<tr>
+{% for c in model.__table__.columns if c.name not in ['created_at','updated_at','password_hash'] %}<td>{{ getattr(item, c.name) }}</td>{% endfor %}
+<td class="actions"><a href="{{ url_for('admin.edit_resource', resource=resource, item_id=item.id) }}">Edit</a><form method="post" action="{{ url_for('admin.delete_resource', resource=resource, item_id=item.id) }}" onsubmit="return confirm('Delete this record?')"><button class="link-btn">Delete</button></form></td>
+</tr>{% else %}<tr><td colspan="20">No records.</td></tr>{% endfor %}</tbody></table></div>{% endblock %}

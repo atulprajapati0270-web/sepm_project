@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}Admin Dashboard{% endblock %}
+{% block content %}<h1>Admin Dashboard</h1><div class="stats">{% for name,count in counts.items() %}<div class="stat"><strong>{{ count }}</strong><span>{{ name }}</span></div>{% endfor %}</div>
+<h2>Manage Official Information</h2><div class="admin-grid">
+{% for slug,name in [('routes','Traffic & Routes'),('accommodations','Accommodation'),('food','Food'),('medical','Medical'),('events','Events'),('shahi-snan','Shahi Snan'),('security','Security'),('temples','Temples'),('emergency','Emergency Helplines'),('notifications','Notifications')] %}
+<a class="card" href="{{ url_for('admin.list_resource', resource=slug) }}"><h3>{{ name }}</h3><p>Manage records →</p></a>
+{% endfor %}
+<a class="card" href="{{ url_for('admin.complaints') }}"><h3>Complaints</h3><p>Review and update status →</p></a>
+<a class="card" href="{{ url_for('admin.lost_found') }}"><h3>Lost & Found</h3><p>Review and update status →</p></a>
+</div>
+<h2>Recent Complaints</h2><div class="list">{% for x in recent_complaints %}<div class="item">#{{ x.id }} · {{ x.category }} · <b>{{ x.status }}</b> · {{ x.description[:100] }}</div>{% else %}<p>No complaints.</p>{% endfor %}</div>
+{% endblock %}

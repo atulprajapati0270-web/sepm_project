@@ -1,0 +1,3 @@
+{% extends "base.html" %}{% block title %}My Complaints{% endblock %}
+{% block content %}<div class="page-head"><h1>My Complaints</h1><a class="btn" href="{{ url_for('complaints.new') }}">New Complaint</a></div>
+<div class="list">{% for x in complaints %}<div class="item"><h3>#{{ x.id }} · {{ x.category }} <span class="badge">{{ x.status }}</span></h3><p>{{ x.description }}</p><p>📍 {{ x.location or 'Not specified' }}</p><small>{{ x.created_at.strftime('%d %b %Y, %I:%M %p') }}</small></div>{% else %}<p>No complaints submitted.</p>{% endfor %}</div>{% endblock %}

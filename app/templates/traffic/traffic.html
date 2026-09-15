@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Traffic & Routes{% endblock %}
+{% block content %}<h1>Traffic & Routes</h1>
+<form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Search routes, restrictions..."><button class="btn">Search</button></form>
+<div class="grid">{% for x in items %}<div class="card"><h3>{{ x.route_name }}</h3><span class="badge">{{ x.status }}</span><p><b>Restriction:</b> {{ x.restriction or 'Not specified' }}</p><p><b>Parking:</b> {{ x.parking or 'Not specified' }}</p><p><b>Alternate:</b> {{ x.alternate_route or 'Not specified' }}</p><p>{{ x.details or '' }}</p></div>{% else %}<p>No route information found.</p>{% endfor %}</div>{% endblock %}

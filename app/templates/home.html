@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Smart Simhastha 2028{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">Ujjain · Madhya Pradesh</p>
+    <h1>Smart Simhastha 2028</h1>
+    <p>One place for routes, accommodation, food, medical help, events, Shahi Snan information, safety, temples, emergency contacts, complaints and Lost & Found.</p>
+    <div class="actions">
+      <a class="btn" href="{{ url_for('events.index') }}">View Events</a>
+      <a class="btn secondary" href="{{ url_for('emergency.index') }}">Emergency Help</a>
+    </div>
+  </div>
+</section>
+
+<h2>Visitor Services</h2>
+<div class="grid">
+{% set cards = [
+  ('Traffic & Routes','traffic.index','Routes, restrictions, parking and alternate routes.'),
+  ('Accommodation','accommodation.index','Hotels, dharamshalas and camps.'),
+  ('Food Facilities','food.index','Restaurants, bhojanshalas and food stalls.'),
+  ('Medical','medical.index','Hospitals, camps, first-aid and ambulance information.'),
+  ('Events','events.index','Event and programme dates, times and locations.'),
+  ('Shahi Snan','shahi_snan.index','Verified schedule and instructions.'),
+  ('Security & Safety','security.index','Safety information and alerts.'),
+  ('Temples','temples.index','Famous and nearby temples.'),
+  ('Emergency','emergency.index','Verified police, ambulance, fire and other helplines.'),
+  ('Complaints','complaints.index','Submit and track complaints.'),
+  ('Lost & Found','lost_found.index','Report lost or found items/persons.'),
+  ('Notifications','notifications.index','Important announcements and alerts.')
+] %}
+{% for title, endpoint, desc in cards %}
+<div class="card"><h3>{{ title }}</h3><p>{{ desc }}</p><a href="{{ url_for(endpoint) }}">Open →</a></div>
+{% endfor %}
+</div>
+
+<h2>Latest Alerts</h2>
+{% if notifications %}
+<div class="list">
+{% for n in notifications %}
+<div class="item"><strong>{{ n.title }}</strong><span class="badge {{ n.priority|lower }}">{{ n.priority }}</span><p>{{ n.message }}</p><small>{{ n.date.strftime('%d %b %Y, %I:%M %p') }}</small></div>
+{% endfor %}
+</div>
+{% else %}<p class="muted">No notifications published yet.</p>{% endif %}
+{% endblock %}

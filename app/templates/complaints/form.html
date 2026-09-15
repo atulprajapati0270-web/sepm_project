@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}New Complaint{% endblock %}
+{% block content %}<div class="form-card"><h1>Report Complaint / Problem</h1><form method="post">
+<label>Category<select name="category" required><option value="">Select</option><option>Traffic</option><option>Accommodation</option><option>Food</option><option>Medical</option><option>Security</option><option>Other</option></select></label>
+<label>Description<textarea name="description" required rows="6"></textarea></label>
+<label>Location<input name="location"></label><button class="btn">Submit Complaint</button></form></div>{% endblock %}

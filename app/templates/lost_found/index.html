@@ -1,0 +1,3 @@
+{% extends "base.html" %}{% block title %}Lost & Found{% endblock %}
+{% block content %}<div class="page-head"><h1>My Lost & Found Reports</h1><a class="btn" href="{{ url_for('lost_found.new') }}">New Report</a></div>
+<div class="list">{% for x in reports %}<div class="item"><h3>#{{ x.id }} · {{ x.report_type }} <span class="badge">{{ x.status }}</span></h3><p>{{ x.description }}</p><p>📍 {{ x.location }}</p><small>{{ x.created_at.strftime('%d %b %Y, %I:%M %p') }}</small></div>{% else %}<p>No reports submitted.</p>{% endfor %}</div>{% endblock %}
