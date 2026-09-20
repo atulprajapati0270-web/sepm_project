@@ -1,2 +1,6 @@
-{% extends "base.html" %}{% block title %}Emergency Helpline{% endblock %}
-{% block content %}<h1>Emergency Helpline</h1><div class="warning">For an actual emergency, contact the relevant official emergency service. This page is an information directory.</div><div class="grid">{% for x in items %}<div class="card emergency"><h3>{{ x.category }} <span class="badge">{{ 'Verified' if x.verified else 'Not Verified' }}</span></h3><a class="phone" href="tel:{{ x.number }}">{{ x.number }}</a><p>{{ x.details or '' }}</p></div>{% else %}<p>No helplines published.</p>{% endfor %}</div>{% endblock %}
+{% extends "base.html" %}{% block title %}{{ 'आपातकालीन हेल्पलाइन' if is_hindi else 'Emergency Helpline' }}{% endblock %}
+{% block content %}
+<div class="page-head"><div><span class="eyebrow">{{ 'त्वरित सहायता' if is_hindi else 'Quick Assistance' }}</span><h1>{{ 'आपातकालीन हेल्पलाइन' if is_hindi else 'Emergency Helpline' }}</h1></div><span class="badge">{{ items|length }} {{ 'नंबर' if is_hindi else 'numbers' }}</span></div>
+<div class="warning">{{ 'वास्तविक आपात स्थिति में संबंधित आधिकारिक आपातकालीन सेवा से संपर्क करें। यह पृष्ठ एक सूचना निर्देशिका है।' if is_hindi else 'For an actual emergency, contact the relevant official emergency service. This page is an information directory.' }}</div>
+<div class="grid">{% for x in items %}<div class="card emergency"><h3>{{ x.category }} <span class="badge">{{ ('सत्यापित' if is_hindi else 'Verified') if x.verified else ('सत्यापन लंबित' if is_hindi else 'Not Verified') }}</span></h3><a class="phone" href="tel:{{ x.number }}">{{ x.number }}</a><p>{{ x.details or '' }}</p></div>{% else %}<p>{{ 'कोई हेल्पलाइन प्रकाशित नहीं है।' if is_hindi else 'No helplines published.' }}</p>{% endfor %}</div>
+{% endblock %}

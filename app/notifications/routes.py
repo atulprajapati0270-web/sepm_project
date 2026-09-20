@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request
+from ..integrations.google_updates import sync_google_updates
 from ..models import Notification
 
 notifications_bp = Blueprint("notifications", __name__, url_prefix="/notifications")
 
 @notifications_bp.route("/")
 def index():
+    sync_google_updates()
     q = request.args.get("q", "").strip()
     query = Notification.query
     if q:

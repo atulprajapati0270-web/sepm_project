@@ -1,5 +1,5 @@
-{% extends "base.html" %}{% block title %}New Lost & Found Report{% endblock %}
-{% block content %}<div class="form-card"><h1>Lost & Found Report</h1><form method="post">
-<label>Report Type<select name="report_type" required><option value="">Select</option><option>Lost</option><option>Found</option></select></label>
-<label>Description<textarea name="description" required rows="6" placeholder="Describe the item/person and relevant details"></textarea></label>
-<label>Location<input name="location" required></label><button class="btn">Submit Report</button></form></div>{% endblock %}
+{% extends "base.html" %}{% block title %}{{ 'नई खोया-पाया रिपोर्ट' if is_hindi else 'New Lost & Found Report' }}{% endblock %}
+{% block content %}<div class="form-card"><h1>{{ 'खोया-पाया रिपोर्ट दर्ज करें' if is_hindi else 'Lost & Found Report' }}</h1><form method="post">
+<label>{{ 'रिपोर्ट का प्रकार' if is_hindi else 'Report Type' }}<select name="report_type" required><option value="">{{ 'चुनें' if is_hindi else 'Select' }}</option><option value="Lost">{{ 'खोया (Lost)' if is_hindi else 'Lost' }}</option><option value="Found">{{ 'पाया (Found)' if is_hindi else 'Found' }}</option></select></label>
+<label>{{ 'विवरण' if is_hindi else 'Description' }}<textarea name="description" required rows="6" placeholder="{{ 'सामग्री या व्यक्ति का विवरण और प्रासंगिक जानकारी लिखें' if is_hindi else 'Describe the item/person and relevant details' }}"></textarea></label>
+<label>{{ 'स्थान' if is_hindi else 'Location' }}<input name="location" required></label><button class="btn">{{ 'रिपोर्ट दर्ज करें' if is_hindi else 'Submit Report' }}</button></form></div>{% endblock %}

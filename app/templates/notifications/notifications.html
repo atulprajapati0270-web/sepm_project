@@ -1,2 +1,6 @@
-{% extends "base.html" %}{% block title %}Notifications{% endblock %}
-{% block content %}<h1>Notifications & Alerts</h1><form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Search notifications"><button class="btn">Search</button></form><div class="list">{% for x in items %}<div class="item"><h3>{{ x.title }} <span class="badge {{ x.priority|lower }}">{{ x.priority }}</span></h3><p>{{ x.message }}</p><small>{{ x.date.strftime('%d %b %Y, %I:%M %p') }}</small></div>{% else %}<p>No notifications published.</p>{% endfor %}</div>{% endblock %}
+{% extends "base.html" %}{% block title %}{{ 'सूचनाएं और अलर्ट' if is_hindi else 'Notifications & Alerts' }}{% endblock %}
+{% block content %}
+<div class="page-head"><div><span class="eyebrow">{{ 'आधिकारिक बुलेटिन' if is_hindi else 'Official Bulletin' }}</span><h1>{{ 'सूचनाएं और अलर्ट' if is_hindi else 'Notifications & Alerts' }}</h1></div><span class="badge">{{ items|length }} {{ 'अलर्ट' if is_hindi else 'alerts' }}</span></div>
+<form class="search" method="get"><input name="q" value="{{ q }}" placeholder="{{ 'सूचनाएं खोजें' if is_hindi else 'Search notifications' }}"><button class="btn">{{ 'खोजें' if is_hindi else 'Search' }}</button></form>
+<div class="list">{% for x in items %}<div class="item"><h3>{{ x.title }} <span class="badge {{ x.priority|lower }}">{{ x.priority }}</span></h3><p>{{ x.message }}</p><small>{{ x.date.strftime('%d %b %Y, %I:%M %p') }}</small></div>{% else %}<p>{{ 'कोई सूचना प्रकाशित नहीं है।' if is_hindi else 'No notifications published.' }}</p>{% endfor %}</div>
+{% endblock %}

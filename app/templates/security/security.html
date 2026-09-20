@@ -1,2 +1,6 @@
-{% extends "base.html" %}{% block title %}Security & Safety{% endblock %}
-{% block content %}<h1>Security & Safety</h1><form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Search safety information"><button class="btn">Search</button></form><div class="list">{% for x in items %}<div class="item"><h3>{{ x.title }} <span class="badge">{{ x.alert_level }}</span></h3><p><b>Police / Help Point:</b> {{ x.police_help_point or 'Not specified' }}</p><p>{{ x.safety_information }}</p></div>{% else %}<p>No safety information published.</p>{% endfor %}</div>{% endblock %}
+{% extends "base.html" %}{% block title %}{{ 'सुरक्षा और बचाव' if is_hindi else 'Security & Safety' }}{% endblock %}
+{% block content %}
+<div class="page-head"><div><span class="eyebrow">{{ 'सुरक्षा निर्देशिका' if is_hindi else 'Safety Directory' }}</span><h1>{{ 'सुरक्षा और बचाव जानकारी' if is_hindi else 'Security & Safety' }}</h1></div><span class="badge">{{ items|length }} {{ 'अद्यतन' if is_hindi else 'updates' }}</span></div>
+<form class="search" method="get"><input name="q" value="{{ q }}" placeholder="{{ 'सुरक्षा जानकारी खोजें' if is_hindi else 'Search safety information' }}"><button class="btn">{{ 'खोजें' if is_hindi else 'Search' }}</button></form>
+<div class="list">{% for x in items %}<div class="item"><h3>{{ x.title }} <span class="badge">{{ x.alert_level }}</span></h3><p><b>{{ 'पुलिस / सहायता केंद्र:' if is_hindi else 'Police / Help Point:' }}</b> {{ x.police_help_point or ('उल्लेखित नहीं' if is_hindi else 'Not specified') }}</p><p>{{ x.safety_information }}</p></div>{% else %}<p>{{ 'कोई सुरक्षा जानकारी प्रकाशित नहीं है।' if is_hindi else 'No safety information published.' }}</p>{% endfor %}</div>
+{% endblock %}

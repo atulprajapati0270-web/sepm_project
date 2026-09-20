@@ -23,5 +23,11 @@ def index():
         }["events"]
         from sqlalchemy import or_
         query = query.filter(or_(*[field.ilike(f"%{q}%") for field in search_fields]))
-    items = query.order_by(getattr(Event, "name").desc() if "events" in ["events","shahi_snan","notifications"] else getattr(Event, "name")).all()
-    return render_template("events/events.html", items=items, title="Events and Programmes", q=q)
+    items = query.order_by(Event.date.asc(), Event.time.asc(), Event.name.asc()).all()
+    return render_template(
+        "events/events.html",
+        items=items,
+        next_event=items[0] if items else None,
+        title="Events and Programmes",
+        q=q,
+    )

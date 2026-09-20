@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}{{ 'लॉगिन' if is_hindi else 'Login' }}{% endblock %}
 {% block content %}
-<div class="form-card"><h1>Login</h1>
+<div class="form-card"><h1>{{ 'लॉगिन करें' if is_hindi else 'Login' }}</h1>
 <form method="post">
-<label>Email<input type="email" name="email" required></label>
-<label>Password<input type="password" name="password" required></label>
-<button class="btn">Login</button>
+<label>{{ 'ईमेल' if is_hindi else 'Email' }}<input type="email" name="email" required></label>
+<label>{{ 'पासवर्ड' if is_hindi else 'Password' }}<input type="password" name="password" required></label>
+<button class="btn">{{ 'लॉगिन' if is_hindi else 'Login' }}</button>
 </form>
-<p>New visitor? <a href="{{ url_for('auth.register') }}">Create an account</a></p></div>
+<p>{{ 'नए आगंतुक हैं?' if is_hindi else 'New visitor?' }} <a href="{{ url_for('auth.register') }}">{{ 'खाता बनाएं' if is_hindi else 'Create an account' }}</a></p></div>
 {% endblock %}

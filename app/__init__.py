@@ -10,7 +10,7 @@ def create_app():
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
         "DATABASE_URL",
-        "mysql+pymysql://root:password@localhost:3306/smart_simhastha"
+        "sqlite:///smart_simhastha.db"
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -19,6 +19,15 @@ def create_app():
     login_manager.login_view = "auth.login"
     login_manager.login_message = "Please log in to continue."
     app.jinja_env.globals["getattr"] = getattr
+
+    @app.context_processor
+    def inject_lang():
+        from flask import session
+        current_lang = session.get('lang', 'hi')
+        return {
+            'lang': current_lang,
+            'is_hindi': (current_lang == 'hi')
+        }
 
     from .auth.routes import auth_bp
     from .main.routes import main_bp
@@ -35,12 +44,13 @@ def create_app():
     from .lost_found.routes import lost_found_bp
     from .notifications.routes import notifications_bp
     from .admin.routes import admin_bp
+    from .maps.routes import maps_bp
 
     for bp in [
-        main_bp, auth_bp, traffic_bp, accommodation_bp, food_bp, medical_bp,
-        events_bp, shahi_snan_bp, security_bp, temples_bp, emergency_bp,
-        complaints_bp, lost_found_bp, notifications_bp, admin_bp
-    ]:
+    main_bp, auth_bp, traffic_bp, accommodation_bp, food_bp, medical_bp,
+    events_bp, shahi_snan_bp, security_bp, temples_bp, emergency_bp,
+    complaints_bp, lost_found_bp, notifications_bp, admin_bp, maps_bp
+]:
         app.register_blueprint(bp)
 
     return app

@@ -39,15 +39,35 @@ with app.app_context():
                           contact="0000000000")
         ])
 
-    if FoodFacility.query.count() == 0:
-        db.session.add_all([
-            FoodFacility(name="Sample Bhojanshala", category="Bhojanshala",
-                         location="Ujjain", details="Academic sample food facility.",
-                         contact="0000000000"),
-            FoodFacility(name="Sample Food Stall", category="Food Stall",
-                         location="Simhastha Area", details="Academic sample record.",
-                         contact="0000000000")
-        ])
+    food_facilities = [
+        FoodFacility(name="Mahakal Corridor Bhojanalaya", category="Bhojanalaya",
+                     location="Mahakal Corridor, Ujjain",
+                     details="Vegetarian pilgrim meals near the Mahakal area. Confirm opening hours, pricing, and crowd arrangements locally.",
+                     contact="Verify locally"),
+        FoodFacility(name="Ram Ghat Food Stall Zone", category="Food Stall",
+                     location="Ram Ghat, Ujjain",
+                     details="Local snack and meal stalls near the ghat. Choose hygienic, permitted stalls and check current access restrictions.",
+                     contact="Verify locally"),
+        FoodFacility(name="Freeganj Hotel Dining Area", category="Hotel Restaurant",
+                     location="Freeganj, Ujjain",
+                     details="Hotel restaurants and family dining options in central Ujjain. Confirm availability before travelling.",
+                     contact="Verify locally"),
+        FoodFacility(name="Nanakheda Pilgrim Food Court", category="Food Court",
+                     location="Nanakheda, Ujjain",
+                     details="Food court area serving visitors near the bus and transit zone. Verify the current operating facilities.",
+                     contact="Verify locally"),
+        FoodFacility(name="Ujjain Railway Station Food Point", category="Transit Food",
+                     location="Railway Station Area, Ujjain",
+                     details="Quick meals, packaged food, and refreshments near the railway station. Use authorised vendors where possible.",
+                     contact="Verify locally"),
+        FoodFacility(name="Simhastha Sector Community Kitchen", category="Community Kitchen",
+                     location="Designated Simhastha Sector, Ujjain",
+                     details="Community meal service location to be confirmed by the event administration before publication.",
+                     contact="Official details pending"),
+    ]
+    for facility in food_facilities:
+        if not FoodFacility.query.filter_by(name=facility.name).first():
+            db.session.add(facility)
 
     if MedicalFacility.query.count() == 0:
         db.session.add_all([
@@ -73,20 +93,35 @@ with app.app_context():
                                     safety_information="Follow official instructions, keep important contacts accessible and report problems through appropriate channels.",
                                     alert_level="Normal"))
 
-    if Temple.query.count() == 0:
-        db.session.add_all([
-            Temple(name="Sample Famous Temple", location="Ujjain",
-                   description="Academic sample. Replace with verified temple information."),
-            Temple(name="Sample Nearby Temple", location="Ujjain",
-                   description="Academic sample. Replace with verified temple information.")
-        ])
+    temple_directory = [
+         Temple(name="Mahakaleshwar Jyotirlinga Temple", location="Mahakal Marg, Ujjain",
+             description="One of the twelve Jyotirlingas, in the Mahakal temple area. Check official darshan and entry arrangements before visiting."),
+         Temple(name="Harsiddhi Mata Temple", location="Near Mahakaleshwar Temple, Ujjain",
+             description="A historic Shakti temple close to the Mahakal complex. Confirm current timings and crowd arrangements locally."),
+         Temple(name="Kal Bhairav Temple", location="Bhairavgarh, Ujjain",
+             description="A revered Bhairav shrine on the Ujjain pilgrimage circuit. Check the current route and opening hours before travel."),
+         Temple(name="Mangalnath Temple", location="Mangalnath Road, Ujjain",
+             description="A sacred temple on the Shipra-side pilgrimage route. Verify traffic access during major Simhastha days."),
+         Temple(name="Chintaman Ganesh Temple", location="Fatehabad Road, Ujjain",
+             description="A well-known Ganesh temple visited by pilgrims. Confirm local transport and darshan timings."),
+         Temple(name="Gadkalika Temple", location="Near Kal Bhairav, Ujjain",
+             description="A historic Shakti shrine associated with Ujjain's temple tradition. Verify current visitor information before relying on it."),
+         Temple(name="Bade Ganeshji Temple", location="Near Mahakaleshwar Temple, Ujjain",
+             description="A traditional Ganesh shrine near the Mahakal area. Check local entry guidance and timings."),
+    ]
+    for temple in temple_directory:
+        if not Temple.query.filter_by(name=temple.name).first():
+            db.session.add(temple)
 
-    if EmergencyHelpline.query.count() == 0:
-        db.session.add_all([
-            EmergencyHelpline(category="Police", number="VERIFY", details="Replace with verified official emergency number.", verified=False),
-            EmergencyHelpline(category="Ambulance", number="VERIFY", details="Replace with verified official emergency number.", verified=False),
-            EmergencyHelpline(category="Fire", number="VERIFY", details="Replace with verified official emergency number.", verified=False)
-        ])
+    emergency_contacts = [
+        EmergencyHelpline(category="National Emergency", number="112", details="Integrated emergency response number in India. Confirm local availability before relying on it.", verified=False),
+        EmergencyHelpline(category="Police", number="100", details="Police emergency number. Confirm local response arrangements before relying on it.", verified=False),
+        EmergencyHelpline(category="Ambulance", number="108", details="Ambulance emergency number. Confirm local service coverage before relying on it.", verified=False),
+        EmergencyHelpline(category="Fire", number="101", details="Fire emergency number. Confirm local response arrangements before relying on it.", verified=False),
+    ]
+    for contact in emergency_contacts:
+        if not EmergencyHelpline.query.filter_by(category=contact.category).first():
+            db.session.add(contact)
 
     if Notification.query.count() == 0:
         db.session.add(Notification(title="Welcome to Smart Simhastha 2028",

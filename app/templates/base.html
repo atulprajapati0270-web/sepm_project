@@ -1,37 +1,64 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ session.get('lang', 'hi') }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Smart Simhastha 2028{% endblock %}</title>
+  <title>{% block title %}सिंहस्थ 2028{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+Devanagari:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<nav class="navbar">
-  <a class="brand" href="{{ url_for('main.home') }}">🕉 Smart Simhastha 2028</a>
-  <div class="navlinks">
-    <a href="{{ url_for('traffic.index') }}">Traffic</a>
-    <a href="{{ url_for('accommodation.index') }}">Stay</a>
-    <a href="{{ url_for('food.index') }}">Food</a>
-    <a href="{{ url_for('medical.index') }}">Medical</a>
-    <a href="{{ url_for('events.index') }}">Events</a>
-    <a href="{{ url_for('shahi_snan.index') }}">Shahi Snan</a>
-    <a href="{{ url_for('security.index') }}">Safety</a>
-    <a href="{{ url_for('temples.index') }}">Temples</a>
-    <a href="{{ url_for('emergency.index') }}">Emergency</a>
-    <a href="{{ url_for('notifications.index') }}">Alerts</a>
-    {% if current_user.is_authenticated %}
-      <a href="{{ url_for('complaints.index') }}">Complaints</a>
-      <a href="{{ url_for('lost_found.index') }}">Lost & Found</a>
-      <a href="{{ url_for('auth.profile') }}">Profile</a>
-      {% if current_user.role == 'admin' %}<a href="{{ url_for('admin.dashboard') }}">Admin</a>{% endif %}
-      <a href="{{ url_for('auth.logout') }}">Logout</a>
-    {% else %}
-      <a href="{{ url_for('auth.login') }}">Login</a>
-      <a class="btn small" href="{{ url_for('auth.register') }}">Register</a>
-    {% endif %}
+<header class="site-header">
+  <!-- Row 1: Brand · Language · Auth -->
+  <div class="header-top">
+    <a class="brand" href="{{ url_for('main.home') }}">🕉 {{ 'सिंहस्थ 2028' if is_hindi else 'Simhastha 2028' }}</a>
+    <div class="header-top-right">
+      <div class="language-switch">
+        <span>{{ 'भाषा' if is_hindi else 'Language' }}</span>
+        <a class="{% if is_hindi %}active{% endif %}" href="{{ url_for('main.language', lang='hi', next=request.full_path) }}">हिंदी</a>
+        <a class="{% if not is_hindi %}active{% endif %}" href="{{ url_for('main.language', lang='en', next=request.full_path) }}">English</a>
+      </div>
+      <div class="nav-auth">
+        {% if current_user.is_authenticated %}
+          {% if is_hindi %}<a href="{{ url_for('complaints.index') }}">शिकायत</a><a href="{{ url_for('lost_found.index') }}">खोया-पाया</a><a href="{{ url_for('auth.profile') }}">प्रोफ़ाइल</a>{% else %}<a href="{{ url_for('complaints.index') }}">Complaints</a><a href="{{ url_for('lost_found.index') }}">Lost &amp; Found</a><a href="{{ url_for('auth.profile') }}">Profile</a>{% endif %}
+          {% if current_user.role == 'admin' %}<a class="pill-link" href="{{ url_for('admin.dashboard') }}">{{ 'प्रशासन' if is_hindi else 'Admin' }}</a>{% endif %}
+          <a class="pill-link danger" href="{{ url_for('auth.logout') }}">{{ 'लॉगआउट' if is_hindi else 'Logout' }}</a>
+        {% else %}
+          {% if is_hindi %}<a href="{{ url_for('auth.login') }}">लॉगिन</a><a class="btn small" href="{{ url_for('auth.register') }}">पंजीकरण</a>{% else %}<a href="{{ url_for('auth.login') }}">Login</a><a class="btn small" href="{{ url_for('auth.register') }}">Register</a>{% endif %}
+        {% endif %}
+      </div>
+    </div>
   </div>
-</nav>
+
+  <!-- Row 2: Page navigation links -->
+  <nav class="sub-nav" aria-label="{{ 'मुख्य नेविगेशन' if is_hindi else 'Main navigation' }}">
+    {% if is_hindi %}
+      <a href="{{ url_for('traffic.index') }}">🚦 यातायात</a>
+      <a href="{{ url_for('accommodation.index') }}">🏨 ठहरना</a>
+      <a href="{{ url_for('food.index') }}">🍽 भोजन</a>
+      <a href="{{ url_for('medical.index') }}">🏥 चिकित्सा</a>
+      <a href="{{ url_for('events.index') }}">📅 आयोजन</a>
+      <a href="{{ url_for('shahi_snan.index') }}">🪷 शाही स्नान</a>
+      <a href="{{ url_for('security.index') }}">🛡 सुरक्षा</a>
+      <a href="{{ url_for('temples.index') }}">🛕 मंदिर</a>
+      <a href="{{ url_for('emergency.index') }}">🚨 आपातकाल</a>
+      <a href="{{ url_for('notifications.index') }}">🔔 सूचनाएं</a>
+    {% else %}
+      <a href="{{ url_for('traffic.index') }}">🚦 Traffic</a>
+      <a href="{{ url_for('accommodation.index') }}">🏨 Stay</a>
+      <a href="{{ url_for('food.index') }}">🍽 Food</a>
+      <a href="{{ url_for('medical.index') }}">🏥 Medical</a>
+      <a href="{{ url_for('events.index') }}">📅 Events</a>
+      <a href="{{ url_for('shahi_snan.index') }}">🪷 Shahi Snan</a>
+      <a href="{{ url_for('security.index') }}">🛡 Safety</a>
+      <a href="{{ url_for('temples.index') }}">🛕 Temples</a>
+      <a href="{{ url_for('emergency.index') }}">🚨 Emergency</a>
+      <a href="{{ url_for('notifications.index') }}">🔔 Alerts</a>
+    {% endif %}
+  </nav>
+</header>
 
 <main class="container">
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -43,9 +70,14 @@
 </main>
 
 <footer>
-  <p>Smart Simhastha 2028 Management System · Academic Project · Ujjain, Madhya Pradesh</p>
-  <p class="muted">This platform provides information and assistance; it does not replace official emergency services.</p>
+  {% if session.get('lang', 'hi') == 'hi' %}<p>सिंहस्थ 2028 · उज्जैन, मध्य प्रदेश</p><p class="muted">यह मंच जानकारी और सहायता प्रदान करता है; आपातकालीन सेवाओं का विकल्प नहीं है।</p>{% else %}<p>Simhastha 2028 · Ujjain, Madhya Pradesh</p><p class="muted">This platform provides information and assistance; it does not replace official emergency services.</p>{% endif %}
 </footer>
+<aside class="assistant-widget" aria-label="{{ 'उज्जैन AI मार्गदर्शक' if session.get('lang', 'hi') == 'hi' else 'Ujjain AI Guide' }}">
+  <button class="assistant-toggle" type="button" aria-expanded="false" aria-controls="assistant-panel"><span>ॐ</span><strong>{{ 'उज्जैन मार्गदर्शक' if session.get('lang', 'hi') == 'hi' else 'Ujjain Guide' }}</strong><em>{{ 'पूछें' if session.get('lang', 'hi') == 'hi' else 'Ask' }}</em></button>
+  <div class="assistant-panel" id="assistant-panel" hidden>
+    {% if session.get('lang', 'hi') == 'hi' %}<div class="assistant-header"><div><span class="eyebrow">सिंहस्थ 2028</span><h2>उज्जैन AI मार्गदर्शक</h2></div><button class="assistant-close" type="button" aria-label="मार्गदर्शक बंद करें">×</button></div><p class="assistant-intro">उज्जैन में नए हैं? मंदिर, आसपास के शहर, भोजन, यात्रा, आयोजन या सुरक्षा के बारे में पूछें।</p><div class="assistant-suggestions"><button type="button">उज्जैन के पास कौन से शहर हैं?</button><button type="button">भोजन कहां मिलेगा?</button><button type="button">कहां दर्शन करें?</button></div><div class="assistant-messages" aria-live="polite"><div class="assistant-message assistant-message-bot">नमस्ते। मैं उज्जैन की यात्रा समझने में आपकी सहायता कर सकता हूं।</div></div><form class="assistant-form"><input name="message" autocomplete="off" placeholder="उज्जैन के बारे में पूछें..." aria-label="उज्जैन मार्गदर्शक से पूछें"><button type="submit" aria-label="प्रश्न भेजें">↑</button></form><small class="assistant-note">जानकारी सामान्य मार्गदर्शन के लिए है। आधिकारिक समय-सारणी और आपातकालीन विवरण की पुष्टि करें।</small>{% else %}<div class="assistant-header"><div><span class="eyebrow">Simhastha 2028</span><h2>Ujjain AI Guide</h2></div><button class="assistant-close" type="button" aria-label="Close guide">×</button></div><p class="assistant-intro">New to Ujjain? Ask about temples, nearby cities, food, travel, events, or safety.</p><div class="assistant-suggestions"><button type="button">Which cities are near Ujjain?</button><button type="button">Where can I find food?</button><button type="button">What should I visit?</button></div><div class="assistant-messages" aria-live="polite"><div class="assistant-message assistant-message-bot">Namaste. I can help you understand and explore Ujjain.</div></div><form class="assistant-form"><input name="message" autocomplete="off" placeholder="Ask about Ujjain..." aria-label="Ask the Ujjain guide"><button type="submit" aria-label="Send question">↑</button></form><small class="assistant-note">Guidance is informational. Verify official schedules and emergency details.</small>{% endif %}
+  </div>
+</aside>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

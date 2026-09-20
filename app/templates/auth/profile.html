@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Profile{% endblock %}
+{% block title %}{{ 'प्रोफ़ाइल' if is_hindi else 'Profile' }}{% endblock %}
 {% block content %}
-<div class="form-card"><h1>My Profile</h1>
+<div class="form-card"><h1>{{ 'मेरी प्रोफ़ाइल' if is_hindi else 'My Profile' }}</h1>
 <form method="post">
-<label>Name<input name="name" value="{{ current_user.name }}" required></label>
-<label>Email<input value="{{ current_user.email }}" disabled></label>
-<label>Contact<input name="contact" value="{{ current_user.contact or '' }}"></label>
-<button class="btn">Update Profile</button>
+<label>{{ 'नाम' if is_hindi else 'Name' }}<input name="name" value="{{ current_user.name }}" required></label>
+<label>{{ 'ईमेल' if is_hindi else 'Email' }}<input value="{{ current_user.email }}" disabled></label>
+<label>{{ 'मोबाइल नंबर' if is_hindi else 'Contact' }}<input name="contact" value="{{ current_user.contact or '' }}"></label>
+<button class="btn">{{ 'प्रोफ़ाइल अपडेट करें' if is_hindi else 'Update Profile' }}</button>
 </form></div>
 {% endblock %}

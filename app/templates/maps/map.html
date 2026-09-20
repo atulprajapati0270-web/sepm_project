@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+{% block title %}{{ 'उज्जैन मानचित्र' if is_hindi else 'Simhastha Map' }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="eyebrow">{{ 'नगर मानचित्र' if is_hindi else 'City Map' }}</span>
+    <h1>🗺️ {{ 'स्मार्ट सिंहस्थ मानचित्र' if is_hindi else 'Smart Simhastha Map' }}</h1>
+  </div>
+</div>
+
+<section class="map-section">
+
+  <div class="map-controls">
+
+    <button type="button" class="btn" id="my-location-btn">
+      📍 {{ 'मेरा स्थान' if is_hindi else 'My Location' }}
+    </button>
+
+    <button type="button" class="btn secondary" id="traffic-btn">
+      🚦 {{ 'यातायात' if is_hindi else 'Traffic' }}
+    </button>
+
+  </div>
+
+
+  <!-- MAP -->
+
+  <div id="home-map"></div>
+
+
+  <!-- TRAFFIC LEGEND -->
+
+  <div class="traffic-legend">
+    <span>🟢 Low</span>
+    <span>🟡 Moderate</span>
+    <span>🔴 Heavy</span>
+  </div>
+
+
+  <!-- TRAFFIC PANEL -->
+
+  <div
+    id="traffic-panel"
+    class="traffic-panel"
+    style="display: none;"
+  >
+
+    <div class="traffic-panel-header">
+
+      <h3>🚦 Traffic & Routes</h3>
+
+      <button
+        type="button"
+        id="close-traffic"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <div id="traffic-list">
+      Loading traffic information...
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- LEAFLET CSS -->
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+
+<!-- LEAFLET JS -->
+
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<script>
+
+// ==========================================
+// SMART SIMHASTHA MAP
+// ==========================================
+
+const homeMap = L.map("home-map").setView(
+  [23.1765, 75.7885],
+  13
+);
+
+
+// OpenStreetMap
+
+L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap contributors"
+  }
+).addTo(homeMap);
+
+
+// Ujjain Marker
+
+const ujjainMarker = L.marker(
+  [23.1765, 75.7885]
+).addTo(homeMap);
+
+ujjainMarker.bindPopup(
+  "<b>🕉️ Ujjain</b><br>Smart Simhastha 2028"
+);
+
+
+// ==========================================
+// USER LOCATION
+// ==========================================
+
+let userMarker = null;
+
+document
+  .getElementById("my-location-btn")
+  .addEventListener("click", function () {
+
+    if (!navigator.geolocation) {
+
+      alert(
+        "Location is not supported by your browser."
+      );
+
+      return;
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+      function (position) {
+
+        const lat =
+          position.coords.latitude;
+
+        const lng =
+          position.coords.longitude;
+
+
+        if (userMarker) {
+
+          homeMap.removeLayer(
+            userMarker
+          );
+
+        }
+
+
+        userMarker = L.marker(
+          [lat, lng]
+        )
+        .addTo(homeMap)
+        .bindPopup(
+          "<b>📍 You are here</b>"
+        )
+        .openPopup();
+
+
+        homeMap.setView(
+          [lat, lng],
+          16
+        );
+
+      },
+
+
+      function () {
+
+        alert(
+          "Unable to get your location. Please allow location permission."
+        );
+
+      }
+
+    );
+
+  });
+
+
+// ==========================================
+// TRAFFIC
+// ==========================================
+
+const trafficButton =
+  document.getElementById("traffic-btn");
+
+const trafficPanel =
+  document.getElementById("traffic-panel");
+
+const trafficList =
+  document.getElementById("traffic-list");
+
+const closeTraffic =
+  document.getElementById("close-traffic");
+
+
+trafficButton.addEventListener(
+  "click",
+  async function () {
+
+    trafficButton.innerText =
+      "⏳ Loading Traffic...";
+
+
+    trafficPanel.style.display =
+      "block";
+
+
+    trafficList.innerHTML =
+      "⏳ Loading traffic information...";
+
+
+    try {
+
+      const response =
+        await fetch("/traffic/api");
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Traffic API error"
+        );
+
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !data.routes ||
+        data.routes.length === 0
+      ) {
+
+        trafficList.innerHTML =
+          "<p>🚦 No traffic information available.</p>";
+
+        return;
+      }
+
+
+      trafficList.innerHTML = "";
+
+
+      data.routes.forEach(
+        function (route) {
+
+          const routeDiv =
+            document.createElement("div");
+
+
+          routeDiv.className =
+            "traffic-route";
+
+
+          routeDiv.innerHTML = `
+
+            <strong>
+              🚗 ${route.route_name || "Route"}
+            </strong>
+
+            <div>
+              Status:
+              <span class="traffic-status">
+                ${route.status || "N/A"}
+              </span>
+            </div>
+
+            <div>
+              Restriction:
+              ${route.restriction || "None"}
+            </div>
+
+            <div>
+              Parking:
+              ${route.parking || "N/A"}
+            </div>
+
+            <div>
+              Alternate Route:
+              ${route.alternate_route || "N/A"}
+            </div>
+
+            <div>
+              Details:
+              ${route.details || "N/A"}
+            </div>
+
+          `;
+
+
+          trafficList.appendChild(
+            routeDiv
+          );
+
+        }
+      );
+
+
+    } catch (error) {
+
+      console.error(error);
+
+
+      trafficList.innerHTML =
+        "<p>❌ Unable to load traffic information.</p>";
+
+
+    } finally {
+
+      trafficButton.innerText =
+        "🚦 Traffic";
+
+    }
+
+  }
+);
+
+
+// ==========================================
+// CLOSE TRAFFIC PANEL
+// ==========================================
+
+closeTraffic.addEventListener(
+  "click",
+  function () {
+
+    trafficPanel.style.display =
+      "none";
+
+  }
+);
+
+</script>
+{% endblock %}

@@ -1,12 +1,13 @@
 {% extends "base.html" %}
-{% block title %}Register{% endblock %}
+{% block title %}{{ 'पंजीकरण' if is_hindi else 'Register' }}{% endblock %}
 {% block content %}
-<div class="form-card"><h1>Create Visitor Account</h1>
+<div class="form-card"><h1>{{ 'आगंतुक खाता बनाएं' if is_hindi else 'Create Visitor Account' }}</h1>
 <form method="post">
-<label>Name<input name="name" required maxlength="100"></label>
-<label>Email<input type="email" name="email" required maxlength="120"></label>
-<label>Contact<input name="contact" maxlength="20"></label>
-<label>Password<input type="password" name="password" required minlength="6"></label>
-<button class="btn">Register</button>
-</form></div>
+<label>{{ 'नाम' if is_hindi else 'Name' }}<input name="name" required maxlength="100"></label>
+<label>{{ 'ईमेल' if is_hindi else 'Email' }}<input type="email" name="email" required maxlength="120"></label>
+<label>{{ 'मोबाइल नंबर' if is_hindi else 'Contact' }}<input name="contact" maxlength="20"></label>
+<label>{{ 'पासवर्ड' if is_hindi else 'Password' }}<input type="password" name="password" required minlength="6"></label>
+<button class="btn">{{ 'पंजीकरण करें' if is_hindi else 'Register' }}</button>
+</form>
+<p>{{ 'पहले से खाता है?' if is_hindi else 'Already have an account?' }} <a href="{{ url_for('auth.login') }}">{{ 'लॉगिन करें' if is_hindi else 'Login here' }}</a></p></div>
 {% endblock %}

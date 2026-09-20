@@ -1,5 +1,5 @@
-{% extends "base.html" %}{% block title %}New Complaint{% endblock %}
-{% block content %}<div class="form-card"><h1>Report Complaint / Problem</h1><form method="post">
-<label>Category<select name="category" required><option value="">Select</option><option>Traffic</option><option>Accommodation</option><option>Food</option><option>Medical</option><option>Security</option><option>Other</option></select></label>
-<label>Description<textarea name="description" required rows="6"></textarea></label>
-<label>Location<input name="location"></label><button class="btn">Submit Complaint</button></form></div>{% endblock %}
+{% extends "base.html" %}{% block title %}{{ 'नई शिकायत दर्ज करें' if is_hindi else 'New Complaint' }}{% endblock %}
+{% block content %}<div class="form-card"><h1>{{ 'शिकायत / समस्या दर्ज करें' if is_hindi else 'Report Complaint / Problem' }}</h1><form method="post">
+<label>{{ 'श्रेणी' if is_hindi else 'Category' }}<select name="category" required><option value="">{{ 'चुनें' if is_hindi else 'Select' }}</option><option value="Traffic">{{ 'यातायात (Traffic)' if is_hindi else 'Traffic' }}</option><option value="Accommodation">{{ 'आवास (Accommodation)' if is_hindi else 'Accommodation' }}</option><option value="Food">{{ 'भोजन (Food)' if is_hindi else 'Food' }}</option><option value="Medical">{{ 'चिकित्सा (Medical)' if is_hindi else 'Medical' }}</option><option value="Security">{{ 'सुरक्षा (Security)' if is_hindi else 'Security' }}</option><option value="Other">{{ 'अन्य (Other)' if is_hindi else 'Other' }}</option></select></label>
+<label>{{ 'विवरण' if is_hindi else 'Description' }}<textarea name="description" required rows="6"></textarea></label>
+<label>{{ 'स्थान' if is_hindi else 'Location' }}<input name="location"></label><button class="btn">{{ 'शिकायत दर्ज करें' if is_hindi else 'Submit Complaint' }}</button></form></div>{% endblock %}

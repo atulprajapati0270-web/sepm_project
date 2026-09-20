@@ -1,2 +1,7 @@
-{% extends "base.html" %}{% block title %}Accommodation{% endblock %}
-{% block content %}<h1>Accommodation</h1><form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Search by name, type or location"><button class="btn">Search</button></form><div class="grid">{% for x in items %}<div class="card"><h3>{{ x.name }}</h3><span class="badge">{{ x.type }}</span><p>📍 {{ x.location }}</p><p>{{ x.details or '' }}</p><p>☎ {{ x.contact or 'Not provided' }}</p></div>{% else %}<p>No accommodation records found.</p>{% endfor %}</div>{% endblock %}
+{% extends "base.html" %}{% block title %}{{ 'आवास और ठहरना' if is_hindi else 'Accommodation' }}{% endblock %}
+{% block content %}
+<div class="page-head"><div><span class="eyebrow">{{ 'उज्जैन आवास' if is_hindi else 'Ujjain Stays' }}</span><h1>{{ 'आवास और धर्मशालाएं' if is_hindi else 'Accommodation & Stays' }}</h1></div><span class="badge">{{ items|length }} {{ 'सूचीबद्ध' if is_hindi else 'listed' }}</span></div>
+<p class="muted">{{ 'होटल, धर्मशाला, आश्रम और टेंट सिटी की जानकारी खोजें।' if is_hindi else 'Find hotels, dharamshalas, ashrams, and tent cities in Ujjain.' }}</p>
+<form class="search" method="get"><input name="q" value="{{ q }}" placeholder="{{ 'नाम, प्रकार या स्थान से खोजें' if is_hindi else 'Search by name, type or location' }}"><button class="btn">{{ 'खोजें' if is_hindi else 'Search' }}</button></form>
+<div class="grid">{% for x in items %}<div class="card"><h3>{{ x.name }}</h3><span class="badge">{{ x.type }}</span><p>📍 {{ x.location }}</p><p>{{ x.details or '' }}</p><p>☎ {{ x.contact or ('उपलब्ध नहीं' if is_hindi else 'Not provided') }}</p></div>{% else %}<p>{{ 'कोई आवास रिकॉर्ड नहीं मिला।' if is_hindi else 'No accommodation records found.' }}</p>{% endfor %}</div>
+{% endblock %}
