@@ -3,9 +3,9 @@ services:
     name: smart-simhastha-2028
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    startCommand: python seed.py && gunicorn app:app
     envVars:
       - key: SECRET_KEY
         sync: false
-      - key: DATABASE_URL
+      - key: MONGO_URI
         sync: false

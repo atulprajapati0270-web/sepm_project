@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from sqlalchemy import or_
+from ..extensions import or_
 from ..models import Route
 
 traffic_bp = Blueprint("traffic", __name__, url_prefix="/traffic")

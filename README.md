@@ -5,8 +5,8 @@ Academic Software Engineering project based on the supplied SRS.
 ## Technology
 - Frontend: HTML, CSS, JavaScript, Jinja2
 - Backend: Python Flask
-- Database: MySQL
-- ORM: Flask-SQLAlchemy
+- Database: MongoDB
+- Database access: Lightweight MongoDB model/query layer
 - Authentication: Flask-Login
 - Deployment-ready: Gunicorn / Render configuration included
 
@@ -28,10 +28,8 @@ Academic Software Engineering project based on the supplied SRS.
 
 ## Local Setup
 
-### 1. Create MySQL database
-```sql
-CREATE DATABASE smart_simhastha CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
+### 1. Create a MongoDB database
+Create a MongoDB database or Atlas cluster and keep its connection URI ready.
 
 ### 2. Create virtual environment
 Windows:
@@ -55,7 +53,7 @@ pip install -r requirements.txt
 Copy `.env.example` to `.env` and set:
 ```env
 SECRET_KEY=your-secret-key
-DATABASE_URL=mysql+pymysql://root:YOUR_PASSWORD@localhost:3306/smart_simhastha
+MONGO_URI=mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/simhastha
 ```
 
 ### 5. Initialize database
@@ -86,6 +84,6 @@ git push -u origin main
 ```
 
 ## Important
-The SRS states that official event dates, Shahi Snan dates, routes, restrictions and emergency numbers must be verified before publication. This academic implementation uses database records that administrators can maintain. It does not replace official emergency services.
+The SRS states that official event dates, Shahi Snan dates, routes, restrictions and emergency numbers must be verified before publication. This academic implementation uses MongoDB records that administrators can maintain. It does not replace official emergency services.
 
 The SRS also lists live traffic/crowd data, map integration, push notifications, multilingual support and SOS integration as dependencies/future scope. These are intentionally not presented as guaranteed live services.

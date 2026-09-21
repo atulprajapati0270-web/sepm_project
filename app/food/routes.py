@@ -10,7 +10,7 @@ def index():
     if q:
         search_fields = [FoodFacility.name, FoodFacility.category,
                          FoodFacility.location, FoodFacility.details]
-        from sqlalchemy import or_
+        from ..extensions import or_
         query = query.filter(or_(*[field.ilike(f"%{q}%") for field in search_fields]))
     items = query.order_by(getattr(FoodFacility, "name").desc() if "food" in ["events","shahi_snan","notifications"] else getattr(FoodFacility, "name")).all()
     return render_template("food/food.html", items=items, title="Food Facilities", q=q)

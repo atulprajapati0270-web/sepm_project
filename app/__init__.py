@@ -1,4 +1,6 @@
 import os
+from urllib.parse import urlparse
+
 from flask import Flask
 from dotenv import load_dotenv
 from .extensions import db, login_manager
@@ -8,11 +10,14 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-        "DATABASE_URL",
-        "sqlite:///smart_simhastha.db"
+    mongo_uri = os.getenv("MONGO_URI") or os.getenv("MONGODB_URI")
+    if not mongo_uri:
+        raise RuntimeError("MONGO_URI or MONGODB_URI must be set")
+    app.config["MONGO_URI"] = mongo_uri
+    app.config["MONGO_DB_NAME"] = os.getenv(
+        "MONGO_DB_NAME",
+        urlparse(mongo_uri).path.lstrip("/") or "simhastha",
     )
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)
     login_manager.init_app(app)

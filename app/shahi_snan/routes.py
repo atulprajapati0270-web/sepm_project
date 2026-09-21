@@ -9,7 +9,7 @@ def index():
     query = ShahiSnan.query
     if q:
         search_fields = [ShahiSnan.location, ShahiSnan.instructions, ShahiSnan.verification_note]
-        from sqlalchemy import or_
+        from ..extensions import or_
         query = query.filter(or_(*[field.ilike(f"%{q}%") for field in search_fields]))
     items = query.order_by(ShahiSnan.date.asc(), ShahiSnan.time.asc()).all()
     return render_template(
